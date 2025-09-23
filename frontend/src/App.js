@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
+const BASE_URL = "https://chat-to-visualization-4.onrender.com";
+
 
 function App() {
   const [message, setMessage] = useState("");
