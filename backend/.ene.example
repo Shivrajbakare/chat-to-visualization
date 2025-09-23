@@ -1,0 +1,2 @@
+PORT=4000
+OPENAI_API_KEY=      # optional. If left empty, demo LLM generator is used

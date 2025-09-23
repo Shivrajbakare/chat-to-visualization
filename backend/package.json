@@ -1,0 +1,23 @@
+{
+  "name": "chatviz-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV=development nodemon index.js"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "framer-motion": "^12.23.18",
+    "openai": "^5.22.0",
+    "uuid": "^9.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "description": ""
+}
