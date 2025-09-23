@@ -3,22 +3,10 @@ import axios from "axios";
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
 
-
 function App() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [visualization, setVisualization] = useState(null);
-
-  // SSE: optional for real-time updates
-  useEffect(() => {
-    const evtSource = new EventSource(`${BASE_URL}/api/stream`);
-    evtSource.addEventListener("answer_created", (e) => {
-      const data = JSON.parse(e.data);
-      setChat((prev) => [...prev, { role: "ai", text: data.answer.text }]);
-      setVisualization(data.answer.visualization);
-    });
-    return () => evtSource.close();
-  }, []);
 
   const sendMessage = async () => {
     if (!message) return;
@@ -28,16 +16,16 @@ function App() {
     setMessage("");
 
     try {
-      // send question to backend
+      // 1️⃣ POST question
       const res = await axios.post(`${BASE_URL}/api/questions`, {
         userId: "u1",
         question: q,
       });
 
-      // get answer
-      const ansRes = await axios.get(
-        `${BASE_URL}/api/answers/${res.data.answerId}`
-      );
+      const answerId = res.data.answerId;
+
+      // 2️⃣ GET answer
+      const ansRes = await axios.get(`${BASE_URL}/api/answers/${answerId}`);
       setChat((prev) => [
         ...prev,
         { role: "ai", text: ansRes.data.text },
@@ -51,7 +39,6 @@ function App() {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      {/* Left: Visualization */}
       <div style={{ flex: 1, background: "#f0f0f0", padding: 20 }}>
         <h3>Visualization</h3>
         {visualization ? (
@@ -61,7 +48,6 @@ function App() {
         )}
       </div>
 
-      {/* Right: Chat */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 20 }}>
         <div style={{ flex: 1, overflowY: "auto", marginBottom: 10 }}>
           {chat.map((c, i) => (
